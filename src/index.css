@@ -1,0 +1,233 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(#E0F7FA, #B2EBF2);
+    /* Arka plan rengi değiştirildi */
+}
+
+.chatbot-popup {
+    position: fixed;
+    right: 40px;
+    bottom: 40px;
+    width: 420px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1), 0 32px 64px -48px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+}
+
+.chatbot-popup .chat-header {
+    display: flex;
+    padding: 15px 22px;
+    align-items: center;
+    justify-content: space-between;
+    background: #0097A7;
+    /* Header rengi değiştirildi (Canlı Turkuaz) */
+    color: #fff;
+}
+
+.chat-header .header-info {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.header-info .chatbot-icon-container {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.header-info .chatbot-icon-container svg {
+    color: #0097A7;
+    /* İkon rengi header ile uyumlu hale getirildi */
+    width: 24px;
+    height: 24px;
+}
+
+.header-info .logo-text {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.chat-header .close-btn {
+    color: #fff;
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.chat-header .close-btn:hover {
+    transform: scale(1.1);
+}
+
+.chatbot-popup .chat-body {
+    padding: 20px;
+    background: #F1F5F9;
+    /* Mesajlaşma alanı arka planı değiştirildi */
+    overflow-y: auto;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.chat-body .message {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    max-width: 85%;
+}
+
+.chat-body .bot-message {
+    align-self: flex-start;
+}
+
+.chat-body .message .chatbot-icon-container {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0097A7;
+    color: #fff;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.chat-body .message .chatbot-icon-container svg {
+    width: 20px;
+    height: 20px;
+}
+
+.message-text {
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.bot-message .message-text {
+    background: #fff;
+    color: #333;
+    border-top-left-radius: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.user-message {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.user-message .message-text {
+    background: #007B8C;
+    /* Kullanıcı mesaj rengi değiştirildi */
+    color: #fff;
+    border-top-right-radius: 0;
+}
+
+.chatbot-popup .chat-footer {
+    padding: 10px 20px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+}
+
+.chat-footer .chat-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-form .message-input {
+    flex: 1;
+    height: 45px;
+    outline: none;
+    border: 1px solid #ccc;
+    padding: 0 15px;
+    font-size: 1rem;
+    border-radius: 25px;
+    background: #F1F5F9;
+    transition: border-color 0.2s ease;
+}
+
+.chat-form .message-input:focus {
+    border-color: #0097A7;
+}
+
+.chat-form .send-btn {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: #0097A7;
+    /* Gönder butonu rengi değiştirildi */
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.chat-form .send-btn:hover {
+    background: #007B8C;
+}
+
+.chat-header .toggle-btn {
+    color: #fff;
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 2.2rem;
+    /* İkon boyutu büyütüldü */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.chat-header .toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+.chat-form .send-btn {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: #0097A7;
+    /* Gönder butonu rengi değiştirildi */
+    border: none;
+    outline: none;
+    font-size: 1.8rem;
+    /* İkon boyutu büyütüldü */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.chat-form .send-btn:hover {
+    background: #007B8C;
+}

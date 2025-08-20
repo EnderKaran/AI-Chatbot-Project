@@ -11,8 +11,8 @@ const App = () => {
             <ChatbotIcon/>
             <h2 className="logo-text">Chatbot</h2>
           </div>
-            <button class="material-symbols-rounded">
-            keyboard_arrow_down
+          <button class="material-symbols-rounded toggle-btn"> 
+              keyboard_arrow_down
             </button>
         </div>
         {/* Chatbot Body */}
@@ -34,7 +34,7 @@ const App = () => {
         <div className="chat-footer">
           <form action="" className="chat-form">
             <input type="text" placeholder="Message..." className="message-input" required />
-            <button class="material-symbols-rounded"> 
+            <button class="material-symbols-rounded send-btn"> 
                 keyboard_arrow_up
             </button>
             
