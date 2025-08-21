@@ -1,4 +1,6 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
+//icons
+import { MdKeyboardArrowUp } from "react-icons/md";
 
 const ChatForm = ({chatHistory,setChatHistory,generateBotResponse}) => {
 
@@ -34,8 +36,8 @@ const ChatForm = ({chatHistory,setChatHistory,generateBotResponse}) => {
   return (
     <form action="" className="chat-form" onSubmit={handleFormSubmit}>
             <input ref={inputRef} type="text" placeholder="Message..." className="message-input" required />
-            <button class="material-symbols-rounded send-btn"> 
-                keyboard_arrow_up
+            <button class="send-btn"> 
+                <MdKeyboardArrowUp />
             </button>
             
           </form>

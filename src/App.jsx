@@ -1,14 +1,25 @@
-import React from 'react'
 import ChatbotIcon from "./components/ChatbotIcon"
 import ChatForm from "./components/ChatForm"
-import { useState } from "react";
+import { useState , useRef, useEffect} from "react";
 import ChatMessage from "./components/ChatMessage";
+//icons
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { MdModeComment } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 
 const App = () => {
 
   const [chatHistory, setChatHistory] = useState([]);
+  const [showChatbot, setshowChatbot] = useState(false);
+  const chatBodyRef = useRef();
 
   const generateBotResponse = async (history) => {
+
+    const updateHistory = (text) => {
+      setChatHistory(prev => [...prev.filter(msg => msg.text !== "Thinking..."), {role: "model", text}]);
+    }
+
+
     history = history.map(({role, text}) => ({role, parts: [{text}]}));
     
     const requestOptions = {
@@ -22,17 +33,28 @@ const App = () => {
       const data = await response.json();
       if(!response.ok) throw new Error(data.error.message || 'Something went wrong!'); 
         
-      const apiResponseText = data.candidates[0].parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1").trim();
+      const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1").trim();
 
-
+      updateHistory(apiResponseText);
     } catch (error) {
         console.log(error);
     }
 }
 
+useEffect(() => {
+  chatBodyRef.current.scrollTo({ top: chatBodyRef.current.scrollHeight, behavior: 'smooth' });
+} , [chatHistory]);
+
 
   return (
-    <div className="container">
+    <div className={`container ${showChatbot ? "show-chatbot" : ""}`}>
+
+
+      <button onClick={() => setshowChatbot(prev => !prev)} id="chatbot-toggler">
+        <span> <MdModeComment size={20}/> </span>
+        <span> <MdClose size={20} /> </span>
+      </button>
+
       <div className="chatbot-popup">
         {/* Chatbot Header */}
         <div className="chat-header">
@@ -40,12 +62,12 @@ const App = () => {
             <ChatbotIcon/>
             <h2 className="logo-text">Chatbot</h2>
           </div>
-          <button class="material-symbols-rounded toggle-btn"> 
-              keyboard_arrow_down
-            </button>
-        </div>
+          <button onClick={() => setshowChatbot(prev => !prev)} class="toggle-btn"> 
+              <MdKeyboardArrowDown/>
+          </button>
+        </div> 
         {/* Chatbot Body */}
-        <div className="chat-body">
+        <div ref={chatBodyRef} className="chat-body">
           <div className="message bot-message">
             <ChatbotIcon />
             <p className="message-text">
