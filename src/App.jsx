@@ -12,38 +12,74 @@ import { Box, Fab, Grow, Paper, AppBar, Toolbar, Typography, IconButton, Stack }
 import { MdModeComment, MdClose, MdOpenInFull, MdCloseFullscreen } from "react-icons/md";
 
 const App = () => {
-    // State'ler
+    // Sohbet geçmişi state'i
     const [chatHistory, setChatHistory] = useState([
         { id: Date.now(), role: 'model', text: "Hey there! I'm your AI chatbot. How can I assist you today?" }
     ]);
-    // Chatbot görünürlüğünü ve tam ekran modunu kontrol eden state'ler
     const [showChatbot, setShowChatbot] = useState(false);
     const [isFullScreen, setIsFullScreen] = useState(false);
     const chatBodyRef = useRef();
 
-    // Fonksiyonlar
+    // Öneri metinleri
+    const suggestions = [
+        "Yemek tarifi ver",
+        "Komik bir fıkra anlat",
+        "React hakkında bilgi ver",
+        "Bana bir şiir öner"
+    ];
+
     const handleFullScreenToggle = () => setIsFullScreen(prev => !prev);
-    const handleClearChat = () => setChatHistory([{ id: Date.now(), role: 'model', text: "Hey there! I'm your AI chatbot. How can I assist you today?" }]);
+
+    // Sohbeti temizleme fonksiyonu
+    const handleClearChat = () => {
+        setChatHistory([
+            { id: Date.now(), role: 'model', text: "Hey there! I'm your AI chatbot. How can I assist you today?" }
+        ]);
+    };
+
+    // API isteğini yöneten ana fonksiyon
     const generateBotResponse = async (userMessage) => {
         const userMessageData = { id: Date.now(), role: 'user', text: userMessage };
         const thinkingMessageData = { id: Date.now() + 1, role: 'model', text: 'Thinking...' };
+
+        // Kullanıcı mesajını ve "Thinking..." mesajını tek seferde state'e ekle
         const newHistory = [...chatHistory, userMessageData, thinkingMessageData];
         setChatHistory(newHistory);
-        const apiHistory = newHistory.filter(msg => msg.text !== 'Thinking...').map(({ role, text }) => ({ role, parts: [{ text }] }));
-        const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: apiHistory }) };
+        
+        const apiHistory = newHistory
+            .filter(msg => msg.text !== 'Thinking...') // API'ye "Thinking..." mesajını gönderme
+            .map(({ role, text }) => ({ role, parts: [{ text }] }));
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: apiHistory })
+        };
+
         try {
             const response = await fetch(import.meta.env.VITE_API_URL, requestOptions);
             const data = await response.json();
             if (!response.ok) throw new Error(data.error.message || 'Something went wrong!');
+            
             const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1").trim();
-            setChatHistory(prev => [...prev.filter(msg => msg.text !== "Thinking..."), { id: Date.now(), role: "model", text: apiResponseText }]);
+            
+            // "Thinking..." mesajını silip yerine botun gerçek cevabını koy
+            setChatHistory(prev => [
+                ...prev.filter(msg => msg.text !== "Thinking..."),
+                { id: Date.now(), role: "model", text: apiResponseText }
+            ]);
+
         } catch (error) {
             console.error("API request failed:", error);
-            setChatHistory(prev => [...prev.filter(msg => msg.text !== "Thinking..."), { id: Date.now(), role: "model", text: "Sorry, something went wrong. Please try again." }]);
+            // Hata durumunda da "Thinking..." mesajını kaldırıp bir hata mesajı göster
+            setChatHistory(prev => [
+                ...prev.filter(msg => msg.text !== "Thinking..."),
+                { id: Date.now(), role: "model", text: "Sorry, something went wrong. Please try again." }
+            ]);
         }
     };
 
-    // Chat body'nin scroll pozisyonunu güncelle
+    // Her yeni mesajda sohbeti en alta kaydır
     useEffect(() => {
         if (chatBodyRef.current) {
             chatBodyRef.current.scrollTo({ top: chatBodyRef.current.scrollHeight, behavior: 'smooth' });
@@ -71,21 +107,17 @@ const App = () => {
                     elevation={8}
                     sx={{
                         position: 'fixed',
-                        // 'xs' (mobil) ve 'md' (masaüstü) breakpoint'lerine göre stiller değişir.
                         width: { xs: '100vw', md: 420 },
-                        height: { xs: '100vh', md: 'auto' }, 
+                        height: { xs: '100vh', md: 'auto' },
                         top: { xs: 0, md: 'auto' },
                         left: { xs: 0, md: 'auto' },
                         right: { xs: 'auto', md: 35 },
                         bottom: { xs: 'auto', md: 90 },
                         borderRadius: { xs: 0, md: '15px' },
-                        
-                        
                         ...(isFullScreen && {
                             top: 0, left: 0, right: 0, bottom: 0,
                             width: '100vw', height: '100vh', borderRadius: 0,
                         }),
-                        
                         overflow: 'hidden', display: 'flex', flexDirection: 'column',
                     }}
                 >
@@ -108,12 +140,11 @@ const App = () => {
                     <Box
                         ref={chatBodyRef}
                         sx={{
-                            flexGrow: 1, 
+                            flexGrow: 1,
                             overflowY: 'auto',
                             bgcolor: 'grey.100',
                             p: 2.5,
                             display: 'flex', flexDirection: 'column', gap: 2,
-                            //Masaüstü için maksimum yükseklik
                             maxHeight: { md: 400 },
                         }}
                     >
@@ -123,7 +154,11 @@ const App = () => {
                     </Box>
 
                     <Box sx={{ p: 1.5, bgcolor: 'background.paper', borderTop: 1, borderColor: 'divider' }}>
-                        <ChatForm onSendMessage={generateBotResponse} onClearChat={handleClearChat} />
+                        <ChatForm
+                            onSendMessage={generateBotResponse}
+                            onClearChat={handleClearChat}
+                            suggestions={suggestions}
+                        />
                     </Box>
                 </Paper>
             </Grow>
