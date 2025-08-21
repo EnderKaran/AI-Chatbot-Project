@@ -108,7 +108,7 @@ const App = () => {
                     sx={{
                         position: 'fixed',
                         width: { xs: '100vw', md: 420 },
-                        height: { xs: '100vh', md: 'auto' },
+                        height: { xs: '100%', md: 'auto' },
                         top: { xs: 0, md: 'auto' },
                         left: { xs: 0, md: 'auto' },
                         right: { xs: 'auto', md: 35 },
