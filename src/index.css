@@ -261,35 +261,50 @@ body {
 /* ===== RESPONSIVE TASARIM (MOBİL CİHAZLAR) ===== */
 /* ============================================== */
 @media (max-width: 600px) {
+
+    /* Sohbet penceresini tam ekran yap ve layout'u ayarla */
     .chatbot-popup {
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
+        /* Artık 100vh değil, 100% daha stabil */
         max-height: 100%;
         border-radius: 0;
         box-shadow: none;
-        transform: translateY(100%);
-        transform-origin: bottom center;
+
+        /* Yapı: İçeriğin dikey olarak yayılması için */
         display: flex;
         flex-direction: column;
+
+        /* Animasyon: Aşağıdan yukarı kayarak gel */
+        transform: translateY(100%);
+        transform-origin: bottom center;
     }
 
+    /* Animasyonu tetikle */
     .container.show-chatbot .chatbot-popup {
         transform: translateY(0);
     }
-    
+
+    /* Mesajlaşma alanını esnek hale getir (EN ÖNEMLİ KISIM) */
     .chatbot-popup .chat-body {
         flex-grow: 1;
+        /* Header ve footer arasındaki tüm boşluğu doldur */
         padding: 20px 15px;
-        max-height: none; /* max-height'i mobilde geçersiz kıl */
+        max-height: none;
+        /* Masaüstündeki max-height'i geçersiz kıl */
+        height: auto;
+        /* Sabit yüksekliği kaldır */
     }
 
+    /* Toggler butonunu biraz daha içeri al */
     #chatbot-toggler {
         right: 20px;
         bottom: 20px;
     }
-    
+
+    /* Mesaj baloncuklarının genişliğini artır */
     .chat-body .message {
         max-width: 90%;
     }
@@ -298,7 +313,8 @@ body {
         font-size: 1.2rem;
     }
 
+    /* Mobilde 'fullscreen' sınıfının özel bir etkisi olmasına gerek yok */
     .chatbot-popup.fullscreen {
-        transform: none; /* Mobilde zaten tam ekran olduğu için özel animasyona gerek yok */
+        transform: none;
     }
 }
