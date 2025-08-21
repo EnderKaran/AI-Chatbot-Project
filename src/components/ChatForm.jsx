@@ -10,7 +10,6 @@ const ChatForm = ({ onSendMessage, onClearChat }) => {
         const userMessage = inputRef.current.value.trim();
         if (!userMessage) return;
 
-        // Artık state'i burada yönetmiyoruz, sadece ana bileşene mesajı gönderiyoruz.
         onSendMessage(userMessage);
 
         inputRef.current.value = ''; // Input'u temizle
