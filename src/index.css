@@ -41,7 +41,7 @@ body {
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: all 0.2s ease;
-    z-index: 10; /* Diğer elementlerin üzerinde kalması için */
+    z-index: 10;
 }
 
 #chatbot-toggler span {
@@ -50,7 +50,6 @@ body {
     transition: opacity 0.2s ease;
 }
 
-/* Toggler ikon geçiş animasyonu */
 .container.show-chatbot #chatbot-toggler {
     transform: rotate(90deg);
 }
@@ -74,7 +73,6 @@ body {
     border-radius: 15px;
     box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1), 0 32px 64px -48px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    /* Varsayılan gizli durumu ve animasyon */
     opacity: 0;
     pointer-events: none;
     transform: scale(0.5);
@@ -88,7 +86,7 @@ body {
     transform: scale(1);
 }
 
-/* ===== Header, Body, Footer Genel Yapısı ===== */
+/* ===== Header ===== */
 .chatbot-popup .chat-header {
     display: flex;
     padding: 15px 22px;
@@ -109,31 +107,44 @@ body {
     font-weight: 600;
 }
 
-.chat-header .close-btn {
+/* Header'daki tüm ikon butonları için ortak stil */
+.chat-header .icon-btn {
     color: var(--white-color);
     background: none;
     border: none;
     outline: none;
-    font-size: 1.8rem;
     cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: transform 0.2s ease;
 }
 
-.chat-header .close-btn:hover {
+.chat-header .icon-btn:hover {
     transform: scale(1.1);
 }
 
+.chat-header .close-btn {
+    font-size: 1.8rem;
+}
+
+.chat-header .fullscreen-btn {
+    font-size: 1.5rem;
+    margin-left: 10px;
+}
+
+/* ===== Chat Body (Mesajlaşma Alanı) ===== */
 .chatbot-popup .chat-body {
     padding: 20px;
     background: var(--light-bg-color);
     overflow-y: auto;
-    height: 400px;
+    max-height: 400px; /* Sabit height yerine max-height kullanıldı */
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* ===== Mesaj Baloncukları ===== */
 .chat-body .message {
     display: flex;
     align-items: flex-end;
@@ -149,11 +160,9 @@ body {
     word-break: break-word;
 }
 
-/* Bot ve Kullanıcı Mesaj Stilleri */
 .bot-message {
     align-self: flex-start;
 }
-
 .bot-message .message-text {
     background: var(--white-color);
     color: var(--text-dark-color);
@@ -165,7 +174,6 @@ body {
     align-self: flex-end;
     flex-direction: row-reverse;
 }
-
 .user-message .message-text {
     background: var(--user-msg-color);
     color: var(--white-color);
@@ -180,32 +188,28 @@ body {
     border-radius: 50%;
     flex-shrink: 0;
 }
-
 .header-info .chatbot-icon-container {
     width: 40px;
     height: 40px;
     background: var(--white-color);
 }
-
 .header-info .chatbot-icon-container svg {
     color: var(--primary-color);
     width: 24px;
     height: 24px;
 }
-
 .chat-body .message .chatbot-icon-container {
     width: 35px;
     height: 35px;
     background: var(--primary-color);
     color: var(--white-color);
 }
-
 .chat-body .message .chatbot-icon-container svg {
     width: 20px;
     height: 20px;
 }
 
-/* ===== Chatbot Footer (Yazma Alanı) ===== */
+/* ===== Footer (Yazma Alanı) ===== */
 .chatbot-popup .chat-footer {
     padding: 10px 20px;
     background: var(--white-color);
@@ -216,21 +220,6 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.chat-header .toggle-btn {
-    color: #fff;
-    background: none;
-    border: none;
-    outline: none;
-    font-size: 2.2rem;
-    /* İkon boyutu büyütüldü */
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.chat-header .toggle-btn:hover {
-    transform: scale(1.1);
 }
 
 .chat-form .message-input {
@@ -249,34 +238,30 @@ body {
     border-color: var(--primary-color);
 }
 
-.chat-form .send-btn {
-    width: 45px;
-    height: 45px;
+/* ===== TAM EKRAN STİLLERİ ===== */
+.chatbot-popup.fullscreen {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: auto;
+    border-radius: 0;
+    box-shadow: none;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--white-color);
-    background: var(--primary-color);
-    border: none;
-    outline: none;
-    font-size: 1.8rem;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+    flex-direction: column;
 }
 
-.chat-form .send-btn:hover {
-    background: var(--primary-hover-color);
+.chatbot-popup.fullscreen .chat-body {
+    flex-grow: 1;
+    max-height: none; /* max-height'i tam ekranda geçersiz kıl */
 }
 
 /* ============================================== */
 /* ===== RESPONSIVE TASARIM (MOBİL CİHAZLAR) ===== */
 /* ============================================== */
-
 @media (max-width: 600px) {
-    /* Sohbet penceresini tam ekran yap */
     .chatbot-popup {
-        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -284,38 +269,36 @@ body {
         max-height: 100%;
         border-radius: 0;
         box-shadow: none;
-        /* Mobil için giriş animasyonunu değiştir (aşağıdan yukarı kayma) */
         transform: translateY(100%);
         transform-origin: bottom center;
+        display: flex;
+        flex-direction: column;
     }
 
     .container.show-chatbot .chatbot-popup {
         transform: translateY(0);
     }
     
-    /* Mesajlaşma alanını esnek hale getir */
-    .chatbot-popup {
-        display: flex;
-        flex-direction: column;
-    }
-
     .chatbot-popup .chat-body {
-        flex-grow: 1; /* Header ve footer arasındaki tüm boşluğu doldur */
+        flex-grow: 1;
         padding: 20px 15px;
+        max-height: none; /* max-height'i mobilde geçersiz kıl */
     }
 
-    /* Toggler butonunu biraz daha içeri al */
     #chatbot-toggler {
         right: 20px;
         bottom: 20px;
     }
     
-    /* Mesaj baloncuklarının genişliğini artır */
     .chat-body .message {
         max-width: 90%;
     }
 
     .header-info .logo-text {
         font-size: 1.2rem;
+    }
+
+    .chatbot-popup.fullscreen {
+        transform: none; /* Mobilde zaten tam ekran olduğu için özel animasyona gerek yok */
     }
 }
